@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>GLADIATOR - Login</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="https://i.postimg.cc/Ss5bk2dT/20250820-111116.png" type="image/png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary-color: #9e4eff;
+      --background-color: #0d0514;
+      --surface-color: #1a0a2e;
+      --text-color: #e0d8ff;
+      --shadow-color: rgba(158, 78, 255, 0.5);
+    }
+
+    body {
+      background-color: var(--background-color);
+      font-family: 'Poppins', sans-serif;
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    #particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .login-container {
+      position: relative;
+      z-index: 2;
+      background: var(--surface-color);
+      border: 1px solid var(--primary-color);
+      backdrop-filter: blur(10px);
+      padding: 40px 30px;
+      border-radius: 20px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 0 35px var(--shadow-color);
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .logo {
+      width: 90px;
+      filter: drop-shadow(0 0 15px var(--shadow-color));
+      margin-bottom: 10px;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 0 10px var(--shadow-color);
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-color);
+      margin-top: 5px;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .form-group i {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary-color);
+      font-size: 16px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 16px 16px 16px 50px;
+      border-radius: 12px;
+      border: 1px solid var(--primary-color);
+      background: var(--surface-color);
+      color: white;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      box-shadow: 0 0 15px var(--shadow-color);
+    }
+
+    .form-control::placeholder {
+      color: #aaa;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 16px;
+      font-size: 18px;
+      background: linear-gradient(45deg, var(--primary-color), #c38aff);
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      margin-top: 10px;
+      box-shadow: 0 0 20px var(--shadow-color);
+    }
+
+    .btn-login:hover {
+      transform: scale(1.02);
+    }
+
+    .btn-access {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: transparent;
+      color: var(--primary-color);
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 500;
+      text-decoration: none;
+      margin-top: 15px;
+      transition: all 0.3s ease;
+      border: 2px solid var(--primary-color);
+    }
+
+    .btn-access:hover {
+      background: var(--surface-color);
+    }
+    
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* Notification Styles */
+    #notification {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 90%;
+        background: var(--surface-color);
+        color: white;
+        padding: 14px 24px;
+        border: 1px solid var(--primary-color);
+        border-radius: 10px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+        box-shadow: 0 0 20px rgba(0,0,0,0.4);
+        z-index: 9999;
+        animation: slideIn 0.5s ease-out;
+    }
+    #notification.error {
+        border-color: #ff4444;
+    }
+    
+    @keyframes slideIn {
+        from { top: -100px; opacity: 0; }
+        to { top: 20px; opacity: 1; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="particles"></div>
+  
+  <div class="login-container">
+    <div class="logo-container">
+      <img src="https://i.postimg.cc/Ss5bk2dT/20250820-111116.png" alt="Logo" class="logo">
+      <div class="title">GLADIATOR</div>
+      <div class="subtitle">Gateway to System Control</div>
+    </div>
+
+    <form method="POST" action="/auth" id="loginForm">
+      <div class="form-group">
+        <i class="fas fa-user-shield"></i>
+        <input type="text" name="username" class="form-control" placeholder="Username" required />
+      </div>
+      <div class="form-group">
+        <i class="fas fa-key"></i>
+        <input type="password" name="password" class="form-control" placeholder="Password" required />
+      </div>
+      <button type="submit" class="btn-login">
+        LOGIN
+      </button>
+    </form>
+    
+    <a class="btn-access" href="https://t.me/u_4ataa" target="_blank">
+      <i class="fas fa-paper-plane"></i> Contact Developer
+    </a>
+
+    <div class="footer">© 2025 GLADIATOR PANEL.</div>
+  </div>
+
+  <div id="notification"></div>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jnicol/particleground/jquery.particleground.min.js"></script>
+  <script>
+    // Particles Effect
+    $('#particles').particleground({
+      dotColor: 'rgba(255, 255, 255, 0.2)',
+      lineColor: 'rgba(158, 78, 255, 0.2)',
+      density: 12000,
+      particleRadius: 4,
+    });
+
+    // Notification for login messages
+    const params = new URLSearchParams(window.location.search);
+    const msg = params.get("msg");
+    
+    if (msg) {
+      showNotification(decodeURIComponent(msg));
+    }
+    
+    function showNotification(message) {
+      const notification = document.getElementById("notification");
+      notification.innerHTML = `<i class="fas fa-exclamation-circle"></i> &nbsp; ${message}`;
+      notification.style.display = 'block';
+      notification.classList.add("error");
+      
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 5000);
+    }
+    
+    // Prevent form resubmission on page refresh
+    if (window.history.replaceState) {
+      window.history.replaceState(null, null, window.location.href.split('?')[0]);
+    }
+    
+    // Prevent Zoom
+    document.addEventListener('gesturestart', e => e.preventDefault());
+    document.addEventListener('wheel', e => { if(e.ctrlKey) e.preventDefault() }, { passive: false });
+  </script>
+</body>
+</html>

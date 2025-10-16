@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>GLADIATOR - Dashboard</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="https://i.postimg.cc/Ss5bk2dT/20250820-111116.png" type="image/png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    :root {
+      --primary-color: #9e4eff;
+      --background-color: #0d0514;
+      --surface-color: #1a0a2e;
+      --text-color: #e0d8ff;
+      --shadow-color: rgba(158, 78, 255, 0.5);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--background-color);
+      font-family: 'Poppins', sans-serif;
+      color: var(--text-color);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    #particles {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0;
+    }
+
+    header {
+      position: relative;
+      z-index: 10;
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(13, 5, 20, 0.5);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--primary-color);
+      width: 100%;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      text-decoration: none;
+    }
+
+    .logo {
+      width: 50px;
+      filter: drop-shadow(0 0 10px var(--shadow-color));
+    }
+
+    .header-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+    }
+    
+    .nav-container {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-link {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--primary-color);
+    }
+    
+    .login-btn {
+      background: var(--primary-color);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 8px;
+    }
+     .login-btn:hover {
+      color: white;
+      transform: scale(1.05);
+    }
+
+    main {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 50px 20px;
+    }
+
+    .section {
+      padding: 40px;
+      margin-bottom: 50px;
+      background: var(--surface-color);
+      border: 1px solid var(--primary-color);
+      border-radius: 20px;
+      box-shadow: 0 0 35px var(--shadow-color);
+    }
+
+    .section-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      border: none;
+      background: none;
+      box-shadow: none;
+    }
+
+    .hero-title {
+      font-size: 48px;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 0 15px var(--shadow-color);
+      margin-bottom: 15px;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      max-width: 700px;
+      margin: 0 auto 30px auto;
+      line-height: 1.6;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 30px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(45deg, var(--primary-color), #c38aff);
+      color: white;
+      box-shadow: 0 0 20px var(--shadow-color);
+    }
+    .btn-primary:hover {
+        transform: scale(1.05);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+    .btn-outline:hover {
+      background: var(--surface-color);
+    }
+    
+    .plans-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .plan-card {
+      background: rgba(13, 5, 20, 0.7);
+      border: 1px solid var(--primary-color);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 30px var(--shadow-color);
+    }
+
+    .plan-name {
+      font-size: 24px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 15px;
+    }
+
+    .plan-price {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 25px;
+    }
+
+    .plan-price span {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-color);
+    }
+
+    .plan-features {
+      list-style: none;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+
+    .plan-features li {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .plan-features li i {
+      color: var(--primary-color);
+      font-size: 18px;
+    }
+    
+    .about-content {
+      line-height: 1.8;
+      font-size: 16px;
+    }
+    
+    .contact-container {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .contact-icon {
+      width: 45px; height: 45px;
+      background: var(--surface-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center; justify-content: center;
+      color: var(--primary-color);
+      font-size: 20px;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      border: 1px solid var(--primary-color);
+      background: var(--surface-color);
+      color: white;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    textarea.form-control { min-height: 120px; }
+    
+    footer {
+      position: relative; z-index: 2;
+      text-align: center;
+      padding: 30px;
+      background: var(--surface-color);
+      border-top: 1px solid var(--primary-color);
+      margin-top: 50px;
+    }
+
+    @media (max-width: 768px) {
+      header { flex-direction: column; gap: 15px; }
+      .hero-title { font-size: 36px; }
+      .section { padding: 30px 20px; }
+      .contact-container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles"></div>
+
+  <header>
+    <a href="/" class="header-logo">
+      <img src="https://i.postimg.cc/Ss5bk2dT/20250820-111116.png" alt="Logo" class="logo">
+      <span class="header-title">GLADIATOR</span>
+    </a>
+    <nav class="nav-container">
+      <a href="#plans" class="nav-link">Plans</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
+      <a href="/login" class="nav-link login-btn">Login</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1 class="hero-title">Advanced System Control Panel</h1>
+      <p class="hero-subtitle">The ultimate solution for managing and exploring API system vulnerabilities with cutting-edge technology and a user-friendly interface.</p>
+      <a href="#plans" class="btn btn-primary">
+        <i class="fas fa-crown"></i> Get Started
+      </a>
+    </section>
+
+    <section id="plans" class="section">
+      <h2 class="section-title">Membership Plans</h2>
+      <div class="plans-container">
+        <div class="plan-card">
+          <h3 class="plan-name">Basic User</h3>
+          <div class="plan-price">Rp 50.000 <span>/Lifetime</span></div>
+          <ul class="plan-features">
+            <li><i class="fas fa-check-circle"></i> Limited Daily Requests</li>
+            <li><i class="fas fa-check-circle"></i> Standard Support</li>
+            <li><i class="fas fa-check-circle"></i> Web Panel Access</li>
+          </ul>
+          <a href="https://t.me/marlongkretek?text=Mas%20Mau%20Buy%20Basic%20User" class="btn btn-outline">Select Plan</a>
+        </div>
+
+        <div class="plan-card">
+          <h3 class="plan-name">Reseller</h3>
+          <div class="plan-price">Rp 99.000 <span>/Lifetime</span></div>
+          <ul class="plan-features">
+            <li><i class="fas fa-check-circle"></i> Increased Request Limits</li>
+            <li><i class="fas fa-check-circle"></i> Priority Support</li>
+            <li><i class="fas fa-check-circle"></i> Can Create Basic Users</li>
+            <li><i class="fas fa-check-circle"></i> Full Web Panel Access</li>
+          </ul>
+          <a href="https://t.me/marlongkretek?text=Mas%20Mau%20Buy%20Reseller%20User" class="btn btn-outline">Select Plan</a>
+        </div>
+
+        <div class="plan-card">
+          <h3 class="plan-name">Admin</h3>
+          <div class="plan-price">Rp 150.000 <span>/Lifetime</span></div>
+          <ul class="plan-features">
+            <li><i class="fas fa-check-circle"></i> Unlimited Requests</li>
+            <li><i class="fas fa-check-circle"></i> 24/7 Priority Support</li>
+            <li><i class="fas fa-check-circle"></i> Can Create Resellers</li>
+            <li><i class="fas fa-check-circle"></i> Full Role Management</li>
+          </ul>
+          <a href="https://t.me/marlongkretek?text=Mas%20Buy%20Admin%20User" class="btn btn-outline">Select Plan</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <h2 class="section-title">About GLADIATOR</h2>
+      <p class="about-content">GLADIATOR is a sophisticated platform for managing and exploring bugs in API systems. Our tools are designed for security professionals and developers to test and secure WhatsApp applications through advanced exploit methodologies. We provide a responsive, high-performance, cloud-based infrastructure to ensure reliability and speed.</p>
+    </section>
+
+    <section id="contact" class="section">
+      <h2 class="section-title">Contact Owner</h2>
+      <div class="contact-container">
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fab fa-telegram"></i></div>
+            <div>
+              <h3>Telegram</h3>
+              <p>@marlongkretek</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+            <div>
+              <h3>Email</h3>
+              <p>support@spaced.web.id</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-clock"></i></div>
+            <div>
+              <h3>Response Time</h3>
+              <p>Within 24 hours</p>
+            </div>
+          </div>
+        </div>
+        
+        <form class="contact-form" action="https://submit-form.com/L1CukDuye">
+          <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+          <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+          <textarea name="message" class="form-control" placeholder="Your Message" required></textarea>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 GLADIATOR. All rights reserved.</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jnicol/particleground/jquery.particleground.min.js"></script>
+  <script>
+    // Particles Effect
+    $('#particles').particleground({
+      dotColor: 'rgba(255, 255, 255, 0.2)',
+      lineColor: 'rgba(158, 78, 255, 0.2)',
+      density: 12000,
+      particleRadius: 4,
+    });
+
+    // Prevent Zoom
+    document.addEventListener('gesturestart', e => e.preventDefault());
+    document.addEventListener('wheel', e => { if(e.ctrlKey) e.preventDefault() }, { passive: false });
+  </script>
+</body>
+</html>
