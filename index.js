@@ -178,7 +178,7 @@ const {
   BaileysError,
 } = require('@whiskeysockets/baileys');
 
-let Ataa;
+let sock;
 
 const saveActive = (BotNumber) => {
   const list = fs.existsSync(file_session) ? JSON.parse(fs.readFileSync(file_session)) : [];
@@ -209,7 +209,7 @@ const initializeWhatsAppConnections = async () => {
     const sessionDir = sessionPath(BotNumber);
     const { state, saveCreds } = await useMultiFileAuthState(sessionDir);
 
-    Ataa = makeWASocket({
+    sock = makeWASocket({
       auth: state,
       printQRInTerminal: false,
       logger: pino({ level: "silent" }),
@@ -217,10 +217,10 @@ const initializeWhatsAppConnections = async () => {
     });
 
     await new Promise((resolve, reject) => {
-      Ataa.ev.on("connection.update", async ({ connection, lastDisconnect }) => {
+      sock.ev.on("connection.update", async ({ connection, lastDisconnect }) => {
         if (connection === "open") {
           console.log(`Bot ${BotNumber} terhubung!`);
-          sessions.set(BotNumber, Ataa);
+          sessions.set(BotNumber, sock);
           return resolve();
         }
         if (connection === "close") {
@@ -228,7 +228,7 @@ const initializeWhatsAppConnections = async () => {
           return reconnect ? await initializeWhatsAppConnections() : reject(new Error("Koneksi ditutup"));
         }
       });
-      Ataa.ev.on("creds.update", saveCreds);
+      sock.ev.on("creds.update", saveCreds);
     });
   }
 };
@@ -247,7 +247,7 @@ const connectToWhatsApp = async (BotNumber, chatId, ctx) => {
     }
   };
 
-  Ataa = makeWASocket({
+  sock = makeWASocket({
     auth: state,
     printQRInTerminal: false,
     logger: pino({ level: "silent" }),
@@ -256,7 +256,7 @@ const connectToWhatsApp = async (BotNumber, chatId, ctx) => {
 
   let isConnected = false;
 
-  Ataa.ev.on("connection.update", async ({ connection, lastDisconnect }) => {
+  sock.ev.on("connection.update", async ({ connection, lastDisconnect }) => {
     if (connection === "close") {
       const code = lastDisconnect?.error?.output?.statusCode;
       if (code >= 500 && code < 600) {
@@ -272,7 +272,7 @@ const connectToWhatsApp = async (BotNumber, chatId, ctx) => {
 
     if (connection === "open") {
       isConnected = true;
-      sessions.set(BotNumber, Ataa);
+      sessions.set(BotNumber, sock);
       saveActive(BotNumber);
       return await editStatus(makeStatus(BotNumber, "✅ Berhasil terhubung."));
     }
@@ -281,7 +281,7 @@ const connectToWhatsApp = async (BotNumber, chatId, ctx) => {
       await new Promise(r => setTimeout(r, 1000));
       try {
         if (!fs.existsSync(`${sessionDir}/creds.json`)) {
-          const code = await Ataa.requestPairingCode(BotNumber, "ATAAXWEB");
+          const code = await sock.requestPairingCode(BotNumber, "ATAAXWEB");
           const formatted = code.match(/.{1,4}/g)?.join("-") || code;
 
           const codeData = makeCode(BotNumber, formatted);
@@ -297,8 +297,8 @@ const connectToWhatsApp = async (BotNumber, chatId, ctx) => {
     }
   });
 
-  Ataa.ev.on("creds.update", saveCreds);
-  return Ataa;
+  sock.ev.on("creds.update", saveCreds);
+  return sock;
 };
 
 const makeStatus = (number, status) => `\`\`\`
@@ -2764,6 +2764,30 @@ app.get("/logout", (req, res) => {
     console.log(`[ ${chalk.red('LogOut')} ] -> ${user.username}`);
     saveUsers(users);
   }
+  
+app.get('/api/cek', async (req, res) => {
+  const raw = req.query.nomor;
+  if (!raw) {
+    return res.status(400).json({ ok: false, error: 'Parameter ?nomor= wajib diisi' });
+  }
+
+  let nomor = raw.replace(/[^0-9+]/g, '');
+
+  try {
+    const result = await sock.checkStatusWA(nomor);
+
+    res.json({
+      ok: true,
+      nomor,
+      result
+    });
+  } catch (err) {
+    res.status(500).json({
+      ok: false,
+      error: err.message || 'Terjadi kesalahan saat cek nomor'
+    });
+  }
+});  
 
   // 🔥 Clear semua cookies biar gak nyangkut
   res.clearCookie("sessionUser");

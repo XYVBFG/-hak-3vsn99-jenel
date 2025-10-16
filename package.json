@@ -7,7 +7,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-       "@whiskeysockets/baileys": "github:Tama-Ryuichi/bailys",
+       "@whiskeysockets/baileys": "github:kiuur/baileys",
        "fs": "latest",
         "chalk": "^4.1.2",
         "moment": "^2.29.1",
